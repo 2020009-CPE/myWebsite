@@ -1,0 +1,20 @@
+{% extends "learning_logs/base.html" %}
+{% block header %}
+<div class='jumbotron'>Topics</div>
+{% endblock header %}
+{% block content %}
+<div class='olivag'><a href="{% url 'learning_logs:new_topic' %}">New Topic</h5></div>
+    {% for topic in topics %}
+    
+
+        <div class='h14'>
+            <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
+        </div>
+    
+     {% empty %}
+        <li>No topics have been added yet.</li>
+    {% endfor %}
+
+      
+    
+{% endblock content %}

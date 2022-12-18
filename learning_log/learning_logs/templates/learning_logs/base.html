@@ -1,0 +1,853 @@
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning Log</title>
+{% bootstrap_css %}
+ {% bootstrap_javascript %}
+ <div class="vignette"> </div>
+ <div class="vignette"> </div>
+ 
+ 
+</head>
+<body>
+    
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+       
+        <div class="navbar-header">
+            <img class="nyork" src="https://i.imgur.com/IAhEyFA.png" alt="t" width="170" height="59">
+       <button type="button" class="navbar-toggle collapsed"
+       
+        data-toggle="collapse" data-target="#navbar"
+        aria-expanded="false" aria-controls="navbar">
+        </button>
+        
+       <a class="navbar-brand" href="{% url 'learning_logs:index' %}">Home</a>
+        </div>
+        
+       <div id="navbar" class="navbar-collapse collapse">
+       <ul class="nav navbar-nav">
+       <li><a href="{% url 'learning_logs:topics' %}">Topics</a></li>
+       <li><a href="{% url 'learning_logs:about' %}">About</a></li>
+        </ul>
+        
+       <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+        <li><a>Hello, {{ user.username }}</a></li>
+        <li><a href="{% url 'users:logout' %}">Logout</a></li>
+        {% else %}
+        <li><a href="{% url 'users:register' %}">Register</a></li>
+        <li><a href="{% url 'users:login' %}">Login</a></li>
+        {% endif %}
+       </ul>
+        </div><!--/.nav-collapse -->
+       
+        </div>
+        </nav>
+        <div class="container">
+            <div class="page-header">
+           {% block header %}{% endblock header %}
+            </div>
+            <div>
+           {% block content %}{% endblock content %}
+            </div>
+            </div> <!-- /container -->
+            </body>
+           </html>
+<style>
+    .vignette {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        box-shadow: -15px -40px 900px rgb(0 0 0) inset;
+    }
+    span.helptext {
+        color: #ffffff82;
+        text-align: justify;
+        font-weight: 500;
+        font-size: 13px;
+        font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+    }
+            .has-success .checkbox, .has-success .checkbox-inline, .has-success .control-label, .has-success .help-block, .has-success .radio, .has-success .radio-inline, .has-success.checkbox label, .has-success.checkbox-inline label, .has-success.radio label, .has-success.radio-inline label {
+                color: #9c9c9c;
+            }
+            .has-success .form-control {
+                border-color: #ffffff00;
+            }
+            .alert-danger {
+                color: #889194;
+                font-weight: bolder;
+                background-color: #0d141c;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                border-color: #0d141c00;
+            }
+            label {
+                display: inline-block;
+                max-width: 100%;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                margin-bottom: 5px;
+                font-weight: 500;
+                color: #ffffff;
+            }
+            .login {
+                margin: -1px;
+                color: #ffffff82;
+                text-align: justify;
+                font-weight: 500;
+                font-size: 28px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+            }
+            .form-control {
+                border-radius: 4px;
+                font-weight: 600;
+                width: 500px;
+                font-size: 17px;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+                border-color: #f5000000;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+            }
+            textarea {
+                height: 264px;
+                width: 100%;
+            }
+            input {
+                font-family: inherit;
+                font-size: inherit;
+                color: #c6c6c6;
+                border-color: #ffffff00;
+                background: #0d141c;
+                border-radius: 9px;
+                line-height: inherit;
+            }
+            button, input, select, textarea {
+                font-family: inherit;
+                font-size: inherit;
+                color: #fbfbfbf0;
+                background: #0d141c;
+                border-color: #ffffff00;
+                border-radius: 9px;
+                line-height: inherit;
+            }
+            textarea {
+                font-family: inherit;
+                font-size: inherit;
+                color: #b6bbbd;
+                padding-top: 5px;
+                padding-left: 7px;
+                padding-right: 7px;
+                border-color: #ffffff00;
+                background: #0000008c;
+                border-radius: 9px;
+                line-height: inherit;
+            }
+            p {
+                margin: 10px;
+                color: #ffffffde;
+                text-align: justify;
+                font-weight: 500;
+                font-size: 18px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+            }
+            .panel-heading {
+                border-bottom: 1px solid transparent;
+                padding: 12px 15px;
+            }
+            .pz {
+                margin: 10px;
+                color: #000000de;
+                text-align: justify;
+                font-weight: 500;
+                font-size: 18px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+            }
+            .panel {
+                margin-bottom: 18px;
+                margin-top: 5px;
+                border-radius: 14px;
+                background-color: #040d1366;
+                border: 1px solid transparent;
+            }
+            .panel-default>.panel-heading {
+                background-color: #13111100;
+                border-color: #00000000;
+            }
+            *{
+                margin:0;
+                padding:0;
+              }
+              html,body{
+                height:100%;
+              }
+              body {
+                height: 100vh;
+                background-image: url(https://i.imgur.com/MsXNJwP.png);
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                width: 100%;
+            }
+         .navbar-nav>li>a {
+                padding-top: 15px;
+                padding-bottom: 15px;
+                padding: 25px 20px;
+                display: block;
+                font-size: 16px;
+                font-weight: bold;
+                letter-spacing: 1px;
+                text-decoration: none;
+                -webkit-transition: all 0.2s ease-out;
+                transition: all 0.2s ease-out;
+                position: relative;
+            }
+            
+            .navbar-default .navbar-nav>li>a {
+                color: #c2c7c8;
+            }
+            .navbar-default .navbar-nav>li>a:hover {
+                color: #7d1818f0;
+            }
+            h4:hover {
+                color: #7d1818f0;
+            }
+            a:hover {
+                color: #7d1818f0;
+            }
+        
+            .navbar-default {
+                background-color: #0d141cb5;
+                border-color: #e7e7e700;
+            }
+            .navbar-default .navbar-brand {
+                padding: 25px 20px;
+                color: #c2c7c8;
+                font-size: 16px;
+                font-weight: bold;
+                letter-spacing: 1px;
+                text-decoration: none;
+                -webkit-transition: all 0.2s ease-out;
+            }
+            .navbar-default .navbar-brand:hover {
+                color: #7d1818f0;
+            }
+            
+            .jumbotron {
+                font-size: 50px;
+                text-align: center;
+                box-shadow: 0px 10px 20px -10px rgb(0 0 0);
+                margin-bottom: 30px;
+                color: #c2c7c8;
+                background-color: #00000094;
+                font-weight: normal;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+            }
+            h3 {font-family: cursive;
+                font-weight: 500;
+                line-height: 1.1;
+                color: inherit;
+            }
+            h4 {
+                font-size: 23px;
+                opacity: 0.8;
+                color: white;
+                text-align: center;
+                margin-right: auto;
+                width: 184px;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: white;
+            }
+            h5 {
+                font-size: 23px;
+                opacity: 0.8;
+                color: #2289ff;
+                text-align: center;
+                margin-right: auto;
+                padding-top: 2px;
+                padding-bottom: 5px;
+                width: 128px;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #0d141c;
+            }
+            h6 {
+                font-size: 30px;
+                text-align: center;
+                margin-right: auto;
+                font-weight: 100;
+                margin-left: auto;
+                box-shadow: 0px 10px 20px -10px rgb(0 0 0);
+                color: #dadadad9;
+                border-radius: 9px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #00000094;
+            }
+            .h7 {
+                font-size: 19px;
+                opacity: 0.8;
+                color: #abbbbd;
+                text-align: center;
+                border-color: #ffffff00;
+                margin-right: auto;
+                padding-bottom: 5px;
+                font-weight: 500;
+                width: 89px;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #0d141c;
+            }
+            .h7:hover {
+                font-size: 19px;
+                opacity: 0.8;
+                color: #7d1818f0;
+                text-align: center;
+                margin-right: auto;
+                padding-bottom: 5px;
+                font-weight: 500;
+                width: 71px;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #0d141c;
+            }
+            h8 {
+                font-size: 15px;
+                opacity: 0.8;
+                color: #b9bbbc;
+                text-align: center;
+                margin-left: auto;
+                padding-right: 5px;
+                padding-left: 5px;
+                width: 150px;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #0d141c;
+            }
+            .h9 {
+                font-size: 19px;
+                opacity: 0.8;
+                color: #abbbbd;
+                text-align: center;
+                margin-right: auto;
+                padding-bottom: 5px;
+                font-weight: 500;
+                width: 128px;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #0d141c;
+            }
+            .h10 {
+                font-size: 19px;
+                opacity: 0.8;
+                margin-top: 5px;
+                color: #abbbbd;
+                text-align: center;
+                margin-right: auto;
+                border-color: #00800000;
+                padding-bottom: 5px;
+                font-weight: 500;
+                width: 93px;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #0d141c;
+            }
+            .h10:hover {
+                font-size: 19px;
+                opacity: 0.8;
+                color: #7d1818f0;
+                margin-top: 5px;
+                text-align: center;
+                margin-right: auto;
+                width: 93px;
+                padding-bottom: 5px;
+                font-weight: 500;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #0d141c;
+            }
+            .h11 {
+                color: #abaeb4;
+                width: 100%;
+                height: 263px;
+                padding-top: 2px;
+                padding-left: 31px;
+                border-radius: 15px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #0d141c99;
+            }
+            .h12 {
+                font-size: 30px;
+                text-align: center;
+                margin-right: auto;
+                font-weight: 100;
+                margin-left: auto;
+                box-shadow: 0px 10px 20px -10px rgb(0 0 0);
+                color: #dadadad9;
+                border-radius: 9px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #00000094;
+            }
+            .h13 {
+                font-size: 30px;
+                text-align: center;
+                margin-right: auto;
+                font-weight: 100;
+                margin-left: auto;
+                margin-top: 15px;
+                box-shadow: 0px 10px 20px -10px rgb(0 0 0);
+                color: #dadadad9;
+                border-radius: 9px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #00000094;
+            }
+            .h14 {
+                font-size: 24px;
+                text-align: center;
+                margin-right: auto;
+                width: 350px;
+                font-weight: 100;
+                margin-bottom: 9px;
+                margin-left: auto;
+                box-shadow: 0px 10px 20px -10px rgb(0 0 0);
+                color: #dadadad9;
+                border-radius: 9px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #00000094;
+            }
+            .h14:hover {
+                font-size: 27px;
+                text-align: center;
+                margin-right: auto;
+                width: 550px;
+                font-weight: 100;
+                margin-bottom: 9px;
+                margin-left: auto;
+                box-shadow: 0px 10px 20px -10px rgb(0 0 0);
+                color: #dadadad9;
+                border-radius: 9px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #00000094;
+            }
+            .h15 {
+                font-size: 30px;
+                text-align: center;
+                margin-right: auto;
+                font-weight: 100;
+                width: 700px;
+                margin-left: auto;
+                box-shadow: 0px 10px 20px -10px rgb(0 0 0);
+                color: #dadadad9;
+                border-radius: 9px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #00000094;
+            }
+            .olivag {
+                font-size: 23px;
+                opacity: 0.8;
+                color: #2289ff;
+                text-align: center;
+                margin-right: auto;
+                margin-left: auto;
+                padding-bottom: 2px;
+                margin-bottom: 20px;
+                margin-top: -39px;
+                width: 128px;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background: #0d141c;
+            }
+            a {
+                font-weight: 400;
+                color: #c2c7c8f5;
+                text-decoration: none;
+            }
+            a:link { text-decoration: none; 
+            }
+            .container {
+                margin-right: auto;
+                margin-left: auto;
+            }
+            .page-header {
+                padding-bottom: 9px;
+                margin: 40px 0 20px;
+                border-bottom: 1px solid #eee0;
+            }
+            .oliva {
+                margin-right: auto;
+                background-color: thistle;
+                margin-left: auto;
+                font-size: 23px;
+                opacity: 0.8;
+                color: white;
+                margin-bottom: 5px;
+                text-align: center;
+                /* margin-right: auto; */
+                width: 184px;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                background-image: url(https://wallpapers.com/images/high/green-dots-on-white-background-30awtuhczbxaaqtq.jpg);
+            }
+            .oliva:hover {
+                color: #7d1818f0;
+            }
+            .oliva2 {
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+                font-size: 25px;
+                font-weight: lighter;
+                padding-bottom: 10px;
+                text-align: center;
+            }
+            h8:hover {
+                color: #7d1818f0;
+            }
+            .dropbtn {
+                display: block;
+                font-size: 16px;
+                font-weight: bold;
+                position: relative;
+            }
+              
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+              
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                min-width: 160px;
+                z-index: 1;
+            }
+              
+            .dropdown-content a {
+                padding: 12px 16px;
+                font-size: 16px;
+                opacity: 0.8;
+                text-align: center;
+                color: #000000;
+                font-weight: bold;
+                background-color: #ffffff;
+                border-radius: 7px;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+            
+            }
+              
+            .dropdown-content a:hover {
+                padding: 12px 16px;
+                font-size: 16px;
+                opacity: 0.8;
+                text-align: center;
+                background-color: #ffffff;
+                border-radius: 7px;
+                font-weight: bold;
+                color: #7d1818f0;
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+            }
+              
+            .dropdown:hover .dropdown-content {display: block;
+            }
+              
+            .dropdown:hover .dropbtn {background-color: #3e8e41;}
+              
+            .bar {
+                padding: 25px 20px;
+                font-size: 16px;
+                font-weight: bold;
+                letter-spacing: 1px;
+                transition: all 0.2s ease-out;
+                position: relative;
+                color: #c2c7c8;
+            }
+        
+            .bar:hover {
+                color: #7d1818f0;
+            }
+            li {
+                cursor: pointer;
+                list-style-type: circle;
+                font-size: 20px;
+                padding-left: 10px;
+            }
+            body{
+                font-family: 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+            }
+            .cls-1 {
+                fill: #ffc541;
+              }
+              
+              .cls-2 {
+                fill: #4e4066;
+              }
+              
+              .cls-3 {
+                fill: #6f5b92;
+              }
+              
+              .cls-4 {
+                fill: #f78d5e;
+              }
+              
+              .cls-5 {
+                fill: #fa976c;
+              }
+              
+              .cls-6,
+              .cls-7,
+              .cls-8 {
+                fill: #b65c32;
+              }
+              
+              .cls-10,
+              .cls-6 {
+                opacity: 0.6;
+              }
+              
+              .cls-7 {
+                opacity: 0.4;
+              }
+              
+              .cls-9 {
+                fill: #f4b73b;
+              }
+              
+              .cls-11 {
+                fill: #f9c358;
+              }
+              
+              .cls-12 {
+                fill: #9b462c;
+              }
+              
+              .cls-13 {
+                fill: #aa512e;
+              }
+              
+              .cls-14 {
+                fill: #7d6aa5;
+              }
+              
+              
+              /* animations */
+              
+              .wheel {
+                animation: wheel-rotate 6s ease infinite;
+                transform-origin: center;
+                transform-box: fill-box;
+              }
+              
+              @keyframes wheel-rotate {
+                50% {
+                  transform: rotate(360deg);
+                  animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+                }
+                100% {
+                  transform: rotate(960deg)
+                }
+              }
+              
+              .clock-hand-1 {
+                animation: clock-rotate 3s linear infinite;
+                transform-origin: bottom;
+                transform-box: fill-box;
+              }
+              
+              .clock-hand-2 {
+                animation: clock-rotate 6s linear infinite;
+                transform-origin: bottom;
+                transform-box: fill-box;
+              }
+              
+              @keyframes clock-rotate {
+                100% {
+                  transform: rotate(360deg)
+                }
+              }
+              
+              #box-top {
+                animation: box-top-anim 2s linear infinite;
+                transform-origin: right top;
+                transform-box: fill-box;
+              }
+              
+              @keyframes box-top-anim {
+                50% {
+                  transform: rotate(-5deg)
+                }
+              }
+              
+              #umbrella {
+                animation: umbrella-anim 6s linear infinite;
+                transform-origin: center;
+                transform-box: fill-box;
+              }
+              
+              @keyframes umbrella-anim {
+                25% {
+                  transform: translateY(10px) rotate(5deg);
+                }
+                75% {
+                  transform: rotate(-5deg);
+                }
+              }
+              
+              #cup {
+                animation: cup-rotate 3s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+                transform-origin: top left;
+                transform-box: fill-box;
+              }
+              
+              @keyframes cup-rotate {
+                50% {
+                  transform: rotate(-5deg)
+                }
+              }
+              
+              #pillow {
+                animation: pillow-anim 3s linear infinite;
+                transform-origin: center;
+                transform-box: fill-box;
+              }
+              
+              @keyframes pillow-anim {
+                25% {
+                  transform: rotate(10deg) translateY(5px)
+                }
+                75% {
+                  transform: rotate(-10deg)
+                }
+              }
+              
+              #stripe {
+                animation: stripe-anim 3s linear infinite;
+                transform-origin: center;
+                transform-box: fill-box;
+              }
+              
+              @keyframes stripe-anim {
+                25% {
+                  transform: translate(10px, 0) rotate(-10deg)
+                }
+                75% {
+                  transform: translateX(10px)
+                }
+              }
+              
+              #bike {
+                animation: bike-anim 6s ease infinite;
+              }
+              
+              @keyframes bike-anim {
+                0% {
+                  transform: translateX(-1300px)
+                }
+                50% {
+                  transform: translateX(0);
+                  animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+                }
+                100% {
+                  transform: translateX(1300px)
+                }
+              }
+              
+              #rucksack {
+                animation: ruck-anim 3s linear infinite;
+                transform-origin: top;
+                transform-box: fill-box;
+              }
+              
+              @keyframes ruck-anim {
+                50% {
+                  transform: rotate(5deg)
+                }
+              }
+              
+              .circle {
+                animation: circle-anim ease infinite;
+                transform-origin: center;
+                transform-box: fill-box;
+                perspective: 0px;
+              }
+              
+              .circle.c1 {
+                animation-duration: 2s
+              }
+              
+              .circle.c2 {
+                animation-duration: 3s
+              }
+              
+              .circle.c3 {
+                animation-duration: 1s
+              }
+              
+              .circle.c4 {
+                animation-duration: 1s
+              }
+              
+              .circle.c5 {
+                animation-duration: 2s
+              }
+              
+              .circle.c6 {
+                animation-duration: 3s
+              }
+              
+              @keyframes circle-anim {
+                50% {
+                  transform: scale(.2) rotateX(360deg) rotateY(360deg)
+                }
+              }
+              
+              .four,
+              #ou {
+                animation: four-anim cubic-bezier(0.39, 0.575, 0.565, 1) infinite;
+              }
+              
+              .four.a {
+                transform-origin: bottom left;
+                animation-duration: 3s;
+                transform-box: fill-box;
+              }
+              
+              .four.b {
+                transform-origin: bottom right;
+                animation-duration: 3s;
+                transform-box: fill-box;
+              }
+              
+              #ou {
+                animation-duration: 6s;
+                transform-origin: center;
+                transform-box: fill-box;
+              }
+              
+              @keyframes four-anim {
+                50% {
+                  transform: scale(.98)
+                }
+              }
+              .nyork {
+                margin-left: -440px;
+                margin-top: 7px;
+            }
+        </style>
